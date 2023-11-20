@@ -1,3 +1,7 @@
+for db integration install mySql and run it in the background.
+maybe one day I handle this using docker, but not now.
+and do not forget to run prisma migration.
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
