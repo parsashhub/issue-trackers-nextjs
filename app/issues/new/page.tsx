@@ -1,10 +1,10 @@
 "use client";
-import { Button, TextArea, TextField } from "@radix-ui/themes";
+import { Button, Text, TextArea, TextField } from "@radix-ui/themes";
 import { useRouter } from "next/navigation";
 import { useFormik } from "formik";
+import { toast } from "react-toastify";
 import * as yup from "yup";
 import axios from "axios";
-import {toast} from "react-toastify";
 
 const NewIssuesPage = () => {
   const router = useRouter();
@@ -23,9 +23,9 @@ const NewIssuesPage = () => {
       try {
         await axios.post("/api/issues", values);
         router.push("/issues");
-        toast.success("issue created successfully")
+        toast.success("issue created successfully");
       } catch (e) {
-        toast.error(e.message)
+        toast.error(e.message);
       }
     },
   });
@@ -41,24 +41,23 @@ const NewIssuesPage = () => {
           value={values.title}
           onChange={handleChange}
         />
-
       </TextField.Root>
-      <div className="text-red-500">
+      <Text as="p" className="text-red-500">
         {!!(touched["title"] && errors["title"]) &&
-            touched["title"] &&
-            errors["title"]}
-      </div>
+          touched["title"] &&
+          errors["title"]}
+      </Text>
       <TextArea
         placeholder="description"
         name="description"
         value={values.description}
         onChange={handleChange}
       />
-      <div className="text-red-500">
+      <Text as="p" className="text-red-500">
         {!!(touched["description"] && errors["description"]) &&
-            touched["description"] &&
-            errors["description"]}
-      </div>
+          touched["description"] &&
+          errors["description"]}
+      </Text>
       <Button type="button" onClick={handleSubmit}>
         Submit
       </Button>
