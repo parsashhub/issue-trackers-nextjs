@@ -5,9 +5,13 @@ import { useFormik } from "formik";
 import { toast } from "react-toastify";
 import * as yup from "yup";
 import axios from "axios";
+import ErrorMessage from "@/app/components/errorMessage";
+import Spinner from "@/app/components/spinner";
+import { useState } from "react";
 
 const NewIssuesPage = () => {
   const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -19,12 +23,13 @@ const NewIssuesPage = () => {
       description: yup.string().required(),
     }),
     onSubmit: async (values, { resetForm }) => {
-      console.log(values);
       try {
+        setIsSubmitting(true);
         await axios.post("/api/issues", values);
         router.push("/issues");
         toast.success("issue created successfully");
       } catch (e) {
+        setIsSubmitting(false);
         toast.error(e.message);
       }
     },
@@ -42,24 +47,25 @@ const NewIssuesPage = () => {
           onChange={handleChange}
         />
       </TextField.Root>
-      <Text as="p" className="text-red-500">
+      <ErrorMessage>
         {!!(touched["title"] && errors["title"]) &&
           touched["title"] &&
           errors["title"]}
-      </Text>
+      </ErrorMessage>
       <TextArea
         placeholder="description"
         name="description"
         value={values.description}
         onChange={handleChange}
       />
-      <Text as="p" className="text-red-500">
+      <ErrorMessage>
         {!!(touched["description"] && errors["description"]) &&
           touched["description"] &&
           errors["description"]}
-      </Text>
-      <Button type="button" onClick={handleSubmit}>
+      </ErrorMessage>
+      <Button type="button" onClick={handleSubmit} disabled={isSubmitting}>
         Submit
+        {isSubmitting && <Spinner />}
       </Button>
     </form>
   );
