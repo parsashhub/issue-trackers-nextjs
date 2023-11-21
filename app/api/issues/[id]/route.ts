@@ -24,5 +24,20 @@ export async function PUT(
   });
 
   if (!issue) return NextResponse.json("", { status: 404 });
-  // implement the rest to update one issue
+
+  await prisma.issue.update({ where: { id: parseInt(params.id) }, data: body });
+  NextResponse.json("", { status: 203 });
+}
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { id: string } },
+) {
+  const issue = await prisma.issue.findUnique({
+    where: { id: parseInt(params.id) },
+  });
+
+  if (!issue) return NextResponse.json("", { status: 404 });
+
+  prisma.issue.delete({ where: { id: issue.id } });
 }
