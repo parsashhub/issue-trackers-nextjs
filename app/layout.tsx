@@ -7,6 +7,7 @@ import "./globals.css";
 import "@radix-ui/themes/styles.css";
 import "./theme-config.css";
 import "react-toastify/dist/ReactToastify.css";
+import React from "react";
 
 const inter = Inter({
   subsets: ["latin"],
