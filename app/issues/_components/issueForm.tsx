@@ -26,9 +26,11 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
     onSubmit: async (values, { resetForm }) => {
       try {
         setIsSubmitting(true);
-        await axios.post("/api/issues", values);
+        if (issue) await axios.put(`/api/issues/${issue.id}`, values);
+        else await axios.post("/api/issues", values);
+
         router.push("/issues/list");
-        toast.success("issue created successfully");
+        toast.success(`issue ${issue ? "updated" : "created"} successfully`);
       } catch (e) {
         setIsSubmitting(false);
         toast.error(e.message);
@@ -72,7 +74,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
           errors["description"]}
       </ErrorMessage>
       <Button type="button" onClick={handleSubmit} disabled={isSubmitting}>
-        Submit
+        {issue ? "Update" : "Submit"}
         {isSubmitting && <Spinner />}
       </Button>
     </form>
