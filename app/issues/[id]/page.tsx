@@ -31,7 +31,7 @@ const IssieDetail = async ({ params }: Props) => {
       <Box>
         <Button>
           <Pencil2Icon />
-          <Link href={`/issues/${issue.id}/edit`}>Edit</Link>
+          <Link href={`/issues/edit/${issue.id}`}>Edit</Link>
         </Button>
       </Box>
     </Grid>

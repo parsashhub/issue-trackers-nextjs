@@ -9,8 +9,7 @@ import {
 } from "@radix-ui/themes";
 import prisma from "@/prisma/client";
 import StatusBadge from "@/app/components/statusBadge";
-import IssueActions from "@/app/issues/issueActions";
-import Link from "next/link";
+import IssueActions from "@/app/issues/list/issueActions";
 import CustomLink from "@/app/components/customLink";
 
 const classname = "hidden md:table-cell";
