@@ -7,20 +7,18 @@ import {
   TableRoot,
   TableRow,
 } from "@radix-ui/themes";
-import Link from "next/link";
 import prisma from "@/prisma/client";
+import StatusBadge from "@/app/components/statusBadge";
+import IssueActions from "@/app/issues/issueActions";
+
+const classname = "hidden md:table-cell";
 
 const IssuesPage = async () => {
   const issues = await prisma.issue.findMany();
-  const classname = "hidden md:table-cell";
+
   return (
     <>
-      <div className="mb-5">
-        <Button>
-          <Link href="/issues/new">+</Link>
-        </Button>
-      </div>
-
+      <IssueActions />
       <TableRoot variant="surface">
         <TableHeader>
           <TableRow>
@@ -39,9 +37,13 @@ const IssuesPage = async () => {
               <TableRow key={id}>
                 <TableCell>
                   {title}
-                  <div className="block md:hidden">{status}</div>
+                  <div className="block md:hidden">
+                    <StatusBadge status={status} />
+                  </div>
                 </TableCell>
-                <TableCell className={classname}>{status}</TableCell>
+                <TableCell className={classname}>
+                  <StatusBadge status={status} />
+                </TableCell>
                 <TableCell className={classname}>
                   {createdAt.toDateString()}
                 </TableCell>

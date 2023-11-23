@@ -34,8 +34,7 @@ const NewIssuesPage = () => {
       }
     },
   });
-  const { handleChange, handleBlur, handleSubmit, values, touched, errors } =
-    formik;
+  const { handleChange, handleSubmit, values, touched, errors } = formik;
 
   return (
     <form className="max-w-xl space-y-3">
