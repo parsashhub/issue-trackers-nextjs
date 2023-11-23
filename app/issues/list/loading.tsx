@@ -1,4 +1,3 @@
-"use client";
 import { Table } from "@radix-ui/themes";
 import IssueActions from "./issueActions";
 import { Skeleton } from "@/app/components";

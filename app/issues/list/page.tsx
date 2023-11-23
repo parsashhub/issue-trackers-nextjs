@@ -13,7 +13,6 @@ import IssueActions from "@/app/issues/list/issueActions";
 import CustomLink from "@/app/components/customLink";
 
 const classname = "hidden md:table-cell";
-
 const IssuesPage = async () => {
   const issues = await prisma.issue.findMany();
 
