@@ -10,6 +10,7 @@ import {
 import prisma from "@/prisma/client";
 import StatusBadge from "@/app/components/statusBadge";
 import IssueActions from "@/app/issues/issueActions";
+import Link from "next/link";
 
 const classname = "hidden md:table-cell";
 
@@ -36,7 +37,7 @@ const IssuesPage = async () => {
             return (
               <TableRow key={id}>
                 <TableCell>
-                  {title}
+                  <Link href={`/issues/${id}`}>{title}</Link>
                   <div className="block md:hidden">
                     <StatusBadge status={status} />
                   </div>
