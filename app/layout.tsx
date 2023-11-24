@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Navbar from "@/app/navbar";
-import { Theme } from "@radix-ui/themes";
+import { Container, Theme } from "@radix-ui/themes";
 import { ToastContainer } from "react-toastify";
 import "./globals.css";
 import "@radix-ui/themes/styles.css";
 import "./theme-config.css";
 import "react-toastify/dist/ReactToastify.css";
 import React from "react";
+import AuthProvider from "@/app/auth/provider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -26,22 +27,26 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.variable}>
-        <ToastContainer
-          style={{ top: "1rem" }}
-          hideProgressBar={false}
-          position="top-right"
-          autoClose={3000}
-          limit={2}
-          newestOnTop
-          closeOnClick
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-        />
-        <Theme>
-          <Navbar />
-          <main className="p-5">{children}</main>
-        </Theme>
+        <AuthProvider>
+          <ToastContainer
+            style={{ top: "1rem" }}
+            hideProgressBar={false}
+            position="top-right"
+            autoClose={3000}
+            limit={2}
+            newestOnTop
+            closeOnClick
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
+          <Theme>
+            <Navbar />
+            <main className="p-5">
+              <Container>{children}</Container>
+            </main>
+          </Theme>
+        </AuthProvider>
       </body>
     </html>
   );
