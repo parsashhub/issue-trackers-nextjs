@@ -20,3 +20,17 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 For db integration install mySql and run it in the background.
 maybe one day I handle this using docker, but not now.
 and do not forget to run prisma migration.
+
+### .env file
+you should these datas to this file
+```
+DATABASE_URL=mysql://root:password@localhost:3306/issue-tracker
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=thisIsAPrivateKeyForThisProject 
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+```
+you can use openssl to generate a secret key:
+```
+openssl rand -base64 64
+```
