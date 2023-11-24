@@ -16,6 +16,7 @@ import {
   DropdownMenuTrigger,
   Text,
 } from "@radix-ui/themes";
+import { Skeleton } from "@/app/components";
 
 const links = [
   {
@@ -26,62 +27,76 @@ const links = [
 ];
 
 const Navbar = () => {
-  const { status, data } = useSession();
-  const currentPath = usePathname();
-
-  if (status === "loading") return null;
-
   return (
     <nav className="flex space-x-6 border-b mb-5 px-5 h-14  justify-between items-center">
-      <ul className="flex space-x-6 items-center">
-        <Link href="/">
-          <AiFillBug />
-        </Link>
-        {links.map(({ href, name }) => {
-          return (
-            <Link
-              key={href}
-              href={href}
-              className={classnames({
-                "text-zinc-900": href === currentPath,
-                "text-zinc-500": href !== currentPath,
-                "hover:text-zinc-800 transition-colors": true,
-              })}
-            >
-              {name}
-            </Link>
-          );
-        })}
-      </ul>
-      <Box className="flex items-center space-x-4">
-        {status === "authenticated" && (
-          <DropdownMenuRoot>
-            <DropdownMenuTrigger>
-              <Avatar
-                className="cursor-pointer"
-                src={data.user?.image}
-                fallback="?"
-                size="2"
-                radius="full"
-              />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuLabel>
-                <Text size="2">{data.user?.email}</Text>
-              </DropdownMenuLabel>
-              <DropdownMenuItem>
-                <Link href="/api/auth/signout">sign out</Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenuRoot>
-        )}
-        {status === "unauthenticated" && (
-          <Link href="/api/auth/signin">
-            <Button>sign in</Button>
-          </Link>
-        )}
-      </Box>
+      <NavLinks />
+      <AuthStatus />
     </nav>
+  );
+};
+
+const NavLinks = () => {
+  const currentPath = usePathname();
+
+  return (
+    <ul className="flex space-x-6 items-center">
+      <Link href="/">
+        <AiFillBug />
+      </Link>
+      {links.map(({ href, name }) => {
+        return (
+          <Link
+            key={href}
+            href={href}
+            className={classnames({
+              "text-zinc-900": href === currentPath,
+              "text-zinc-500": href !== currentPath,
+              "hover:text-zinc-800 transition-colors": true,
+            })}
+          >
+            {name}
+          </Link>
+        );
+      })}
+    </ul>
+  );
+};
+
+const AuthStatus = () => {
+  const { status, data } = useSession();
+
+  if (status === "loading") return <Skeleton width="3rem" />;
+
+  return (
+    <Box className="flex items-center space-x-4">
+      {status === "authenticated" && (
+        <DropdownMenuRoot>
+          <DropdownMenuTrigger>
+            <Avatar
+              className="cursor-pointer"
+              src={data.user?.image}
+              fallback="?"
+              size="2"
+              radius="full"
+              referrerPolicy="no-referrer"
+            />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuLabel>
+              <Text size="2">{data.user?.email}</Text>
+            </DropdownMenuLabel>
+            <DropdownMenuItem>
+              <Link href="/api/auth/signout">sign out</Link>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenuRoot>
+      )}
+      {status === "unauthenticated" && (
+        <Link href="/api/auth/signin">
+          <Button>sign in</Button>
+        </Link>
+      )}
+    </Box>
   );
 };
 
