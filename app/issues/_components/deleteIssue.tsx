@@ -14,26 +14,32 @@ import { TrashIcon } from "@radix-ui/react-icons";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import Spinner from "../../components/spinner";
 
 const DeleteIssue = ({ issueId }: { issueId: string }) => {
   const router = useRouter();
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
   const handleDelete = async () => {
     try {
+      setIsDeleting(true);
       await axios.delete(`/api/issues/${issueId}`);
       router.push("/issues/list");
       router.refresh();
       toast.success("issue deleted successfully");
     } catch (e: any) {
       toast.error(e.message);
+      setIsDeleting(false);
     }
   };
 
   return (
     <AlertDialogRoot>
       <AlertDialogTrigger>
-        <Button color="red">
+        <Button color="red" disabled={isDeleting}>
           Delete
+          {isDeleting && <Spinner />}
           <TrashIcon />
         </Button>
       </AlertDialogTrigger>
