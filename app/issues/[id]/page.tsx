@@ -4,6 +4,7 @@ import { Box, Button, Card, Flex, Grid, Heading, Text } from "@radix-ui/themes";
 import StatusBadge from "@/app/components/statusBadge";
 import { Pencil2Icon } from "@radix-ui/react-icons";
 import Link from "next/link";
+import DeleteIssue from "@/app/issues/_components/deleteIssue";
 
 interface Props {
   params: { id: string };
@@ -17,8 +18,8 @@ const IssieDetail = async ({ params }: Props) => {
   if (!issue) return notFound();
 
   return (
-    <Grid columns={{ initial: "1", md: "2" }} gap="5">
-      <Box>
+    <Grid columns={{ initial: "1", md: "5" }} gap="5">
+      <Box className="lg:col-span-4">
         <Heading>{issue.title}</Heading>
         <Flex className="space-x-3 my-2">
           <StatusBadge status={issue.status} />
@@ -28,11 +29,14 @@ const IssieDetail = async ({ params }: Props) => {
           <Text>{issue.description}</Text>
         </Card>
       </Box>
-      <Box>
-        <Button>
-          <Pencil2Icon />
-          <Link href={`/issues/edit/${issue.id}`}>Edit</Link>
-        </Button>
+      <Box className="space-x-4">
+        <Link href={`/issues/edit/${issue.id}`}>
+          <Button>
+            Edit
+            <Pencil2Icon />
+          </Button>
+        </Link>
+        <DeleteIssue issueId={issue.id} />
       </Box>
     </Grid>
   );
