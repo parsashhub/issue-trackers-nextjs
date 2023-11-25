@@ -5,6 +5,7 @@ import StatusBadge from "@/app/components/statusBadge";
 import { Pencil2Icon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import DeleteIssue from "@/app/issues/_components/deleteIssue";
+import AssigneeSelect from "@/app/issues/[id]/assigneeSelect";
 
 interface Props {
   params: { id: string };
@@ -29,14 +30,17 @@ const IssieDetail = async ({ params }: Props) => {
           <Text>{issue.description}</Text>
         </Card>
       </Box>
-      <Box className="space-x-4">
-        <Link href={`/issues/edit/${issue.id}`}>
+      <Box>
+        <Flex direction="column" gap="4">
           <Button>
             Edit
-            <Pencil2Icon />
+            <Link href={`/issues/edit/${issue.id}`}>
+              <Pencil2Icon />
+            </Link>
           </Button>
-        </Link>
-        <DeleteIssue issueId={issue.id} />
+          <DeleteIssue issueId={issue.id} />
+          <AssigneeSelect />
+        </Flex>
       </Box>
     </Grid>
   );

@@ -22,7 +22,7 @@ maybe one day I handle this using docker, but not now.
 and do not forget to run prisma migration.
 
 ### .env file
-you should these datas to this file
+you should add this data to this file
 ```
 DATABASE_URL=mysql://root:password@localhost:3306/issue-tracker
 NEXTAUTH_URL=http://localhost:3000
