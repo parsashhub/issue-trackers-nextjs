@@ -14,16 +14,7 @@ import { Issue, User } from "@prisma/client";
 import { toast } from "react-toastify";
 
 const AssigneeSelect = ({ issue }: { issue: Issue }) => {
-  const {
-    data: users,
-    error,
-    isLoading,
-  } = useQuery<User>({
-    queryKey: ["users"],
-    queryFn: () => axios.get("/api/users").then((res) => res.data?.data),
-    retry: 2,
-    staleTime: 60 * 1000 * 5, // 5 min
-  });
+  const { data: users, error, isLoading } = useUsers();
 
   const assignIssue = async (userId: string) => {
     try {
@@ -58,5 +49,13 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
     </SelectRoot>
   );
 };
+
+const useUsers = () =>
+  useQuery<User[]>({
+    queryKey: ["users"],
+    queryFn: () => axios.get("/api/users").then((res) => res.data?.data),
+    retry: 2,
+    staleTime: 60 * 1000 * 60, // 1 hour
+  });
 
 export default AssigneeSelect;
