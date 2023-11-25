@@ -5,7 +5,7 @@ npm i
 ```
 then
 ```bash
-npx prisma migrate dev
+npx prisma migrate dev # for production use deploy
 ```
 and finally run the development server:
 ```bash
@@ -32,5 +32,6 @@ GOOGLE_CLIENT_SECRET=
 ```
 you can use openssl to generate a secret key:
 ```
-openssl rand -base64 64
+openssl rand -base64 32
 ```
+Here is the <a href="https://documenter.getpostman.com/view/18846553/2s9YeD9DRz">link</a> of postman document of this project
