@@ -9,6 +9,7 @@ import "./theme-config.css";
 import "react-toastify/dist/ReactToastify.css";
 import React from "react";
 import AuthProvider from "@/app/auth/provider";
+import QueryClientProvider from "@/app/queryClientProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -27,26 +28,28 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.variable}>
-        <AuthProvider>
-          <ToastContainer
-            style={{ top: "1rem" }}
-            hideProgressBar={false}
-            position="top-right"
-            autoClose={3000}
-            limit={2}
-            newestOnTop
-            closeOnClick
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-          />
-          <Theme>
-            <Navbar />
-            <main className="p-5">
-              <Container>{children}</Container>
-            </main>
-          </Theme>
-        </AuthProvider>
+        <QueryClientProvider>
+          <AuthProvider>
+            <ToastContainer
+              style={{ top: "1rem" }}
+              hideProgressBar={false}
+              position="top-right"
+              autoClose={3000}
+              limit={2}
+              newestOnTop
+              closeOnClick
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+            />
+            <Theme>
+              <Navbar />
+              <main className="p-5">
+                <Container>{children}</Container>
+              </main>
+            </Theme>
+          </AuthProvider>
+        </QueryClientProvider>
       </body>
     </html>
   );
