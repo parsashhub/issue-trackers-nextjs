@@ -11,6 +11,7 @@ import prisma from "@/prisma/client";
 import StatusBadge from "@/app/components/statusBadge";
 import IssueActions from "@/app/issues/list/issueActions";
 import CustomLink from "@/app/components/customLink";
+import Pagination from "@/app/components/pagination";
 
 const classname = "hidden md:table-cell";
 
@@ -65,6 +66,7 @@ const IssuesPage = async ({ searchParams }: { searchParams: Status }) => {
           })}
         </TableBody>
       </TableRoot>
+      <Pagination count={100} size={10} current={2} />
     </>
   );
 };
