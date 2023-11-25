@@ -6,15 +6,18 @@ import { Pencil2Icon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import DeleteIssue from "@/app/issues/_components/deleteIssue";
 import AssigneeSelect from "@/app/issues/[id]/assigneeSelect";
+import { cache } from "react";
 
 interface Props {
   params: { id: string };
 }
 
+const fetchUser = cache((issueId: number) =>
+  prisma.issue.findUnique({ where: { id: issueId } }),
+);
+
 const IssieDetail = async ({ params }: Props) => {
-  const issue = await prisma.issue.findUnique({
-    where: { id: parseInt(params.id) },
-  });
+  const issue = await fetchUser(Number(params.id));
 
   if (!issue) return notFound();
 
@@ -45,5 +48,14 @@ const IssieDetail = async ({ params }: Props) => {
     </Grid>
   );
 };
+
+export async function generateMetadata({ params }: Props) {
+  const issue = await fetchUser(Number(params.id));
+
+  return {
+    title: issue?.title,
+    description: "Details of issue " + issue?.id,
+  };
+}
 
 export default IssieDetail;

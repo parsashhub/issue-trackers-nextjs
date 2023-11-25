@@ -1,19 +1,8 @@
-import {
-  Button,
-  TableBody,
-  TableCell,
-  TableColumnHeaderCell,
-  TableHeader,
-  TableRoot,
-  TableRow,
-} from "@radix-ui/themes";
 import prisma from "@/prisma/client";
-import StatusBadge from "@/app/components/statusBadge";
 import IssueActions from "@/app/issues/list/issueActions";
-import CustomLink from "@/app/components/customLink";
 import Pagination from "@/app/components/pagination";
-
-const classname = "hidden md:table-cell";
+import IssueTable from "@/app/issues/list/issueTable";
+import {Metadata} from "next";
 
 enum Status {
   "IN_PROGRESS",
@@ -21,56 +10,41 @@ enum Status {
   "CLOSED",
 }
 
-const IssuesPage = async ({ searchParams }: { searchParams: Status }) => {
+interface Props {
+  searchParams: { status; page: string };
+}
+
+const IssueList = async ({ searchParams }: Props) => {
+  const page = Number(searchParams.page) || 1;
+  const pageSize = 10;
   const statuses = Object.values(Status);
+
   const status = statuses.includes(searchParams.status)
     ? searchParams.status
     : undefined;
+
+  const where = { status };
   const issues = await prisma.issue.findMany({
     where: { status },
+    skip: (page - 1) * pageSize,
+    take: pageSize,
   });
+  const issueCount = await prisma.issue.findMany({ where });
 
   return (
     <>
       <IssueActions />
-      <TableRoot variant="surface">
-        <TableHeader>
-          <TableRow>
-            <TableColumnHeaderCell>Issue</TableColumnHeaderCell>
-            <TableColumnHeaderCell className={classname}>
-              Status
-            </TableColumnHeaderCell>
-            <TableColumnHeaderCell className={classname}>
-              Created
-            </TableColumnHeaderCell>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {issues?.map(({ id, title, status, createdAt }) => {
-            return (
-              <TableRow key={id}>
-                <TableCell>
-                  <CustomLink href={`/issues/${id}`}>{title}</CustomLink>
-                  <div className="block md:hidden">
-                    <StatusBadge status={status} />
-                  </div>
-                </TableCell>
-                <TableCell className={classname}>
-                  <StatusBadge status={status} />
-                </TableCell>
-                <TableCell className={classname}>
-                  {createdAt.toDateString()}
-                </TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </TableRoot>
-      <Pagination count={100} size={10} current={2} />
+      <IssueTable issues={issues} />
+      <Pagination count={issueCount.length} size={pageSize} current={page} />
     </>
   );
 };
 
+export const metadata: Metadata = {
+  title: "Issue Tracker - Issue List",
+  description: "View all project issues",
+};
+
 export const dynamic = "force-dynamic";
 
-export default IssuesPage;
+export default IssueList;
