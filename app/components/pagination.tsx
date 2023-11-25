@@ -6,6 +6,7 @@ import {
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface Props {
   count: number;
@@ -19,10 +20,17 @@ const reuse = {
 };
 
 const Pagination = ({ current, size, count }: Props) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
   const pageCount = Math.ceil(count / size);
   if (pageCount <= 1) return null;
 
-  const changePage = (page: number) => {};
+  const changePage = (page: number) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("page", page.toString());
+    router.push("?" + params.toString());
+  };
 
   return (
     <Flex className="space-x-2 mt-4 items-center">
