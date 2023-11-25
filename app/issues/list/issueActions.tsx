@@ -1,6 +1,7 @@
 import { Button, Flex } from "@radix-ui/themes";
 import Link from "next/link";
 import React from "react";
+import Filter from "@/app/issues/list/filter";
 
 const IssueActions = () => {
   return (
@@ -8,6 +9,7 @@ const IssueActions = () => {
       <Button>
         <Link href="/issues/new">+</Link>
       </Button>
+      <Filter />
     </Flex>
   );
 };
