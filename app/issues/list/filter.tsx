@@ -29,7 +29,10 @@ const Filter = () => {
   };
 
   return (
-    <SelectRoot onValueChange={(status) => handleValueChange(status)}>
+    <SelectRoot
+      onValueChange={(status) => handleValueChange(status)}
+      defaultValue={searchParams.get("status") || ""}
+    >
       <SelectTrigger placeholder="Filter by status..." />
       <SelectContent>
         {statuses.map((status) => (
