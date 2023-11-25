@@ -10,22 +10,22 @@ import {
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+import Skeleton from "@/app/components/skeleton";
 
 const AssigneeSelect = () => {
-  const [users, setUsers] = useState();
+  const {
+    data: users,
+    error,
+    isLoading,
+  } = useQuery({
+    queryKey: ["users"],
+    queryFn: () => axios.get("/api/users").then((res) => res.data?.data),
+    retry: 2,
+    staleTime: 60 * 1000 * 5, // 5 min
+  });
 
-  const getUsers = async () => {
-    try {
-      const res = await axios.get("/api/users");
-      setUsers(res.data?.data);
-    } catch (e: any) {
-      toast.error(e.message);
-    }
-  };
-
-  useEffect(() => {
-    getUsers();
-  }, []);
+  if (isLoading) return <Skeleton />;
 
   return (
     <SelectRoot>
@@ -34,7 +34,11 @@ const AssigneeSelect = () => {
         <SelectGroup>
           <SelectLabel>Suggestions</SelectLabel>
           <SelectItem value="">Unassigned</SelectItem>
-          {users?.map((user) => <SelectItem key={user.id} value={user.id}>{user.name}</SelectItem>)}
+          {users?.map((user) => (
+            <SelectItem key={user.id} value={user.id}>
+              {user.name}
+            </SelectItem>
+          ))}
         </SelectGroup>
       </SelectContent>
     </SelectRoot>
