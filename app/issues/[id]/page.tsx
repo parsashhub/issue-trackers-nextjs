@@ -39,7 +39,7 @@ const IssieDetail = async ({ params }: Props) => {
             </Link>
           </Button>
           <DeleteIssue issueId={issue.id} />
-          <AssigneeSelect />
+          <AssigneeSelect issue={issue} />
         </Flex>
       </Box>
     </Grid>
